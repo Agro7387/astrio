@@ -1,0 +1,8 @@
+CREATE DATABASE IF NOT EXISTS `astrio`;
+USE `astrio`;
+CREATE TABLE IF NOT EXISTS `table` (
+    `id` int(11) AUTO_INCREMENT,
+    `key` VARCHAR(32) NOT NULL,
+    `value` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
