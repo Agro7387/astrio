@@ -1,47 +1,52 @@
 <?php
 
-$categories = array(
-    array(
+$categories = [
+    [
         'id' => 1,
         "title" => "Обувь",
-        'children' => array(
-            array(
+        'children' => [
+            [
                 'id' => 2,
                 'title' => 'Ботинки',
-                'children' => array(
-                    array(
+                'children' => [
+                    [
                         'id' => 10,
-                        'title' =>'Херня',
-                        'children' => array()
-                    ),
-                ),
-            ),
-            array(
+                        'title' =>'Что-то, с чем-то',
+                        'children' => []
+                    ],
+                ],
+            ],
+            [
                 'id' => 5,
                 'title' => 'Кроссовки',
-            ),
-        )
-    ),
-    array(
+            ],
+        ]
+    ],
+    [
         "id" => 6,
         "title" => "Спорт",
-        'children' => array(
-            array(
+        'children' => [
+            [
                 'id' => 7,
                 'title' => 'Мячи'
-            )
-        )
-    ),
-);
+            ]
+        ]
+    ],
+];
 
 function searchCategory($categories, $id)
 {
+   $title = false;
     foreach ($categories as $category) {
         if (is_array($category) && $category['id'] == $id) {
-            return exit ($category['title']);
+            return $category['title'];
         } elseif (isset($category['children'])) {
-            searchCategory($category['children'], $id);
+            $title = searchCategory($category['children'], $id);
+            if ($title !== false) {
+                return $title;
+            };
         }
     }
+    return $title;
 }
-searchCategory($categories, 7);
+var_dump(searchCategory($categories, 5));

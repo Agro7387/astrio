@@ -13,6 +13,6 @@ $box->setData(3, 'test1');
 $box->save();
 
 $dbBox = DbBox::getInstance();
-$dbBox->setData(4, 'test8');
+$dbBox->setData(7, 'test4');
 $dbBox->save();
 $dbBox->load();

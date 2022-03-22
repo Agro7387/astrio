@@ -16,18 +16,16 @@ class DbBox extends AbstaractBox
 
     public function save()
     {
-        $sql = 'INSERT INTO `table` (`key`, `value`) VALUES'
-        . '(' . key($this->data) . ', ' . "'{$this->data[key($this->data)]}'" . ')';
+        $is_key_exists = $this->mysqli->query(
+            'SELECT `key`, `value` FROM `table` WHERE `key`=' . key($this->data)
+        );
 
-        $this->load();
-        $savedData = $this->savedData;
-        if (!empty($savedData)) {
-            foreach ($savedData as $key => $value) {
-                if ($key === key($this->data)) {
-                    $sql = 'UPDATE `table` SET `value` =' . $this->data[$key]
-                    . 'WHERE `key` = '. $key;
-                }
-            }
+        if ($is_key_exists -> num_rows > 0) {
+            $params = $is_key_exists->fetch_assoc();
+            $sql = 'UPDATE `table` SET `value` = ' . "'{$params['value']}'" . ' WHERE `key` = ' . $params['key'];
+
+        } else {
+            $sql = 'INSERT INTO `table` (`key`, `value`) VALUES (' . key($this->data) . ', ' . "'{$this->data[key($this->data)]}'" . ')';
         }
 
         $this->mysqli->query($sql);
@@ -35,12 +33,12 @@ class DbBox extends AbstaractBox
 
     public function load()
     {
-        $saved_data = [];
+        $_savedData = [];
         $query = $this->mysqli->query("SELECT `key`, `value` FROM `table`");
         while ($row = $query->fetch_assoc()) {
-            $savedData[$row['key']] = $row['value'];
+            $_savedData[$row['key']] = $row['value'];
         }
 
-        $this->savedData = $saved_data;
+        $this->savedData = $_savedData;
     }
 }
